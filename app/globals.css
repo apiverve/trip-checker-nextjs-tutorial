@@ -1,0 +1,122 @@
+:root {
+  --night: #0f1b3d;
+  --night-2: #1b2b5c;
+  --paper: #fffdf7;
+  --ink: #1a2033;
+  --muted: #6b7390;
+  --go: #13a06f;
+  --form: #e39b1b;
+  --stop: #d9433b;
+  --accent: #ffcf5a;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  color: var(--paper);
+  background: radial-gradient(120% 80% at 80% 0%, var(--night-2), var(--night) 60%) fixed;
+}
+
+.shell {
+  container-type: inline-size;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 18px 40px;
+  display: grid;
+  gap: 20px;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+.brand p { margin: 2px 0 0; color: #aab4d6; font-size: 14px; }
+.plane {
+  display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px;
+  background: var(--accent); color: var(--night); font-size: 24px; transform: rotate(-12deg);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.form label { display: grid; gap: 6px; font-size: 12px; color: #aab4d6; text-transform: uppercase; letter-spacing: 0.06em; }
+.form i { text-transform: none; font-style: normal; opacity: 0.6; }
+.form select, .form input {
+  width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(10, 18, 44, 0.6); color: var(--paper); font: inherit; font-size: 15px; color-scheme: dark;
+}
+.form button {
+  grid-column: 1 / -1; padding: 14px; border: 0; border-radius: 14px; font: inherit; font-weight: 700;
+  background: var(--accent); color: var(--night); cursor: pointer; font-size: 16px;
+}
+.form button:disabled { opacity: 0.6; cursor: progress; }
+
+.error { margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(217, 67, 59, 0.18); color: #ffd0cc; }
+
+.ticket {
+  --tone: var(--form);
+  position: relative;
+  padding: 22px;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  border-top: 8px solid var(--tone);
+}
+.ticket.tone-go { --tone: var(--go); }
+.ticket.tone-stop { --tone: var(--stop); }
+.ticket.missing { border-top-color: var(--accent); display: grid; gap: 10px; }
+.ticket.missing h1 { margin: 0; }
+.ticket.missing p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+.route { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.route small { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+.route strong { font-size: 18px; }
+.route .right { text-align: right; }
+.dash { color: var(--muted); white-space: nowrap; font-size: 13px; }
+
+.verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; }
+.stamp {
+  padding: 8px 14px; border: 3px solid var(--tone); border-radius: 10px; color: var(--tone);
+  font-weight: 700; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; transform: rotate(-2deg);
+}
+.stay { padding: 6px 12px; border-radius: 999px; background: #eef0f7; font-size: 14px; font-weight: 600; }
+.note { margin: 12px 0 0; color: var(--muted); }
+
+.cta {
+  display: inline-block; margin-top: 14px; padding: 12px 16px; border-radius: 12px;
+  background: var(--night); color: var(--paper); text-decoration: none; font-weight: 600;
+}
+
+.perforation { margin: 20px -22px; border-top: 2px dashed #d9dbe5; }
+
+.facts { margin: 0; display: grid; grid-template-columns: 1fr; gap: 12px; }
+.facts div { display: grid; gap: 2px; }
+.facts dt { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.facts dd { margin: 0; font-weight: 600; }
+.facts .ok { color: var(--go); }
+.facts .bad { color: var(--stop); }
+.guidance { margin: 16px 0 0; padding: 12px; border-radius: 12px; background: #f3f4fa; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+.foot { font-size: 12px; color: #8b95b8; text-align: center; }
+.foot a { color: var(--accent); }
+
+@container (min-width: 700px) {
+  .form { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .ticket { padding: 30px 34px; }
+  .perforation { margin: 24px -34px; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .route strong { font-size: 22px; }
+}
+
+@container (max-width: 420px) {
+  .form { grid-template-columns: 1fr; }
+  .dash { display: none; }
+}
