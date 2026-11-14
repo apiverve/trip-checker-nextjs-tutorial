@@ -28,9 +28,10 @@ export async function GET(request: Request) {
     if (arrival) entryQuery.arrivalDate = arrival;
     if (expiry) entryQuery.passportExpiry = expiry;
     // Two calls in parallel: can I go (Visa Requirements), and what does my passport need (Entry Requirements).
+    // Entry rules aren't published for every destination, so a missing answer there still shows the visa.
     const [visa, entry] = await Promise.all([
       callApi('visarequirements', { query: { passport, destination } }),
-      callApi('entryrequirements', { query: entryQuery })
+      callApi('entryrequirements', { query: entryQuery }).catch(() => null)
     ]);
     const data = { visa, entry };
     toCache(key, data);

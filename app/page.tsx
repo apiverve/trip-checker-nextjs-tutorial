@@ -19,7 +19,7 @@ type Entry = {
   yellowFever: { certificateLabel: string | null };
   advisories: { uk: { level: number | string; label: string } | null; us: { level: number | string; label: string } | null } | null;
 };
-type Result = { visa: Visa; entry: Entry };
+type Result = { visa: Visa; entry: Entry | null };
 
 // How each answer feels: green to go, amber needs a form, red needs a visa first.
 const TONE: Record<string, string> = {
@@ -150,7 +150,7 @@ export default function Home() {
 
       {error && <p className="error">{error}</p>}
 
-      {v && e && (
+      {v && (
         <section className={`ticket tone-${tone}`} aria-live="polite">
           <div className="route">
             <div>
@@ -183,6 +183,9 @@ export default function Home() {
 
           <div className="perforation" aria-hidden />
 
+          {!e && <p className="guidance">No passport rules are published for {v.destinationName}. Check its official government site before you travel.</p>}
+          {e && (
+          <>
           <dl className="facts">
             <div>
               <dt>Passport validity</dt>
@@ -215,6 +218,8 @@ export default function Home() {
             ))}
           </dl>
           {e.passportValidity.guidance && <p className="guidance">{e.passportValidity.guidance}</p>}
+          </>
+          )}
         </section>
       )}
 
