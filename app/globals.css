@@ -103,6 +103,8 @@ body {
 .facts dd { margin: 0; font-weight: 600; }
 .facts .ok { color: var(--go); }
 .facts .bad { color: var(--stop); }
+.facts .locked { font-weight: 400; color: var(--muted); }
+.facts .locked a { color: var(--accent); }
 .guidance { margin: 16px 0 0; padding: 12px; border-radius: 12px; background: #f3f4fa; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
 .foot { font-size: 12px; color: #8b95b8; text-align: center; }

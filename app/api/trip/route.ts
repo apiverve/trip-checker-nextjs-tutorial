@@ -29,12 +29,16 @@ export async function GET(request: Request) {
     if (expiry) entryQuery.passportExpiry = expiry;
     // Two calls in parallel: can I go (Visa Requirements), and what does my passport need (Entry Requirements).
     // Entry rules aren't published for every destination, so a missing answer there still shows the visa.
+    let entryLimited = false;
     const [visa, entry] = await Promise.all([
       callApi('visarequirements', { query: { passport, destination } }),
-      callApi('entryrequirements', { query: entryQuery }).catch(() => null)
+      callApi('entryrequirements', { query: entryQuery }).catch((err) => {
+        entryLimited = err.status === 429; // rate limited, not "no rules": don't remember it
+        return null;
+      })
     ]);
     const data = { visa, entry };
-    toCache(key, data);
+    if (!entryLimited) toCache(key, data);
     return data;
   });
 }

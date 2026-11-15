@@ -43,6 +43,7 @@ export default function Home() {
   const [error, setError] = useState('');
   const [missingKey, setMissingKey] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [askedDates, setAskedDates] = useState(false);
 
   async function check(p = passport, d = destination, a = arrival, e = expiry) {
     setLoading(true);
@@ -56,6 +57,7 @@ export default function Home() {
       if (body.code === 'missing_key') return setMissingKey(true);
       if (!res.ok) throw new Error(body.error || 'Something went wrong');
       setResult(body);
+      setAskedDates(Boolean(e)); // the passport check needs an expiry date
       try { localStorage.setItem('passport', p); } catch {}
     } catch (err) {
       setError((err as Error).message);
@@ -100,7 +102,8 @@ export default function Home() {
   const v = result?.visa;
   const e = result?.entry;
   const tone = v ? TONE[v.requirement] || 'form' : '';
-  const advisories = [e?.advisories?.uk && ['UK', e.advisories.uk], e?.advisories?.us && ['US', e.advisories.us]].filter(
+  // Advisories are a paid field: on a free key they come back with every value null, so only show filled ones.
+  const advisories = [e?.advisories?.uk?.label && ['UK', e.advisories.uk], e?.advisories?.us?.label && ['US', e.advisories.us]].filter(
     Boolean
   ) as [string, { level: number | string; label: string }][];
 
@@ -197,6 +200,15 @@ export default function Home() {
                 <dd className={e.passportCheck.meetsRequirement ? 'ok' : 'bad'}>
                   {e.passportCheck.meetsRequirement ? 'Passes' : 'Too short'}: must be valid until{' '}
                   {fmt(e.passportCheck.requiredValidUntil)}
+                </dd>
+              </div>
+            )}
+            {askedDates && !e.passportCheck && (
+              <div>
+                <dt>Your passport</dt>
+                <dd className="locked">
+                  Checking it against your dates needs a paid plan.{' '}
+                  <a href="https://apiverve.com/pricing" target="_blank" rel="noreferrer">See pricing</a>
                 </dd>
               </div>
             )}
